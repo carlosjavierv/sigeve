@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Vehiculo;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
-class UserController extends Controller
+class VehiculoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
+        return response()->json(Vehiculo::all());
     }
 
     /**
@@ -82,29 +81,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function login(Request $request){
-        $credentials = $request->only('email','password');
-
-        $token = null;
-
-        try{
-            if(!$token = \JWTAuth::attempt($credentials)){
-                return response()->json(['error'=>'Credenciales no validas']);
-            }
-        }catch (JWTException $ex){
-            return response()->json(['error'=>'Ups, algo fue mal'], 500);
-        }
-        $user = \JWTAuth::toUser($token);
-        $user = User::find($user->id);
-        $response = [
-            "error"=>"",
-            "idUsuario"=>$user->id,
-            "token"=>$token,
-            "displayName"=>$user->nombre,
-            "role"=>$user->role_id
-        ];
-        return response()->json($response);
     }
 }

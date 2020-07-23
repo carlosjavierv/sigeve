@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Unidad;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
-class UserController extends Controller
+class UnidadController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
+        return response()->json(Unidad::all());
     }
 
     /**
@@ -36,7 +35,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //insertar en la base de datos
+        $result = Array(
+            "status"=>0
+        );
+
+        try{
+            $unidad = new Unidad();
+            $unidad->nombre = $request->get("nombre");
+
+            $unidad->save();
+            $result["status"] = 1;
+            $result["message"] = "Unidad guardada correctamente";
+
+        }catch(\Exception $e){
+            $result["status"] = 0;
+            $result["message"] = $e->getMessage();
+        }
+
+        return response()->json(compact("result"));
     }
 
     /**
@@ -82,29 +99,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function login(Request $request){
-        $credentials = $request->only('email','password');
-
-        $token = null;
-
-        try{
-            if(!$token = \JWTAuth::attempt($credentials)){
-                return response()->json(['error'=>'Credenciales no validas']);
-            }
-        }catch (JWTException $ex){
-            return response()->json(['error'=>'Ups, algo fue mal'], 500);
-        }
-        $user = \JWTAuth::toUser($token);
-        $user = User::find($user->id);
-        $response = [
-            "error"=>"",
-            "idUsuario"=>$user->id,
-            "token"=>$token,
-            "displayName"=>$user->nombre,
-            "role"=>$user->role_id
-        ];
-        return response()->json($response);
     }
 }

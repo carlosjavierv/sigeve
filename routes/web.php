@@ -15,5 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/api/user','UserController@login');
+Route::resource('/api/usuario','UserController');
 Route::post('/api/login','UserController@login');
+Route::resource('/api/unidad','UnidadController');
+Route::resource('/api/vehiculo','VehiculoController');
+Route::resource('/api/conductor','ConductorController');
