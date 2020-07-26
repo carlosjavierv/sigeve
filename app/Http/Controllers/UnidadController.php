@@ -64,7 +64,7 @@ class UnidadController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Unidad::find($id));
     }
 
     /**
@@ -87,7 +87,24 @@ class UnidadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $result = Array(
+            "status"=>0
+        );
+
+        try{
+            $unidad = Unidad::find($id);
+            $unidad->nombre = $request->get("nombre");
+
+            $unidad->save();
+            $result["status"] = 1;
+            $result["message"] = "Unidad actualizada correctamente";
+
+        }catch(\Exception $e){
+            $result["status"] = 0;
+            $result["message"] = $e->getMessage();
+        }
+
+        return response()->json(compact("result"));
     }
 
     /**

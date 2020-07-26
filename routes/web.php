@@ -20,3 +20,4 @@ Route::post('/api/login','UserController@login');
 Route::resource('/api/unidad','UnidadController');
 Route::resource('/api/vehiculo','VehiculoController');
 Route::resource('/api/conductor','ConductorController');
+Route::resource('/api/rol','RolController');

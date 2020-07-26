@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Vehiculo;
+use App\Rol;
 use Illuminate\Http\Request;
 
-class VehiculoController extends Controller
+class RolController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class VehiculoController extends Controller
      */
     public function index()
     {
-        return response()->json(Vehiculo::all());
+        return response()->json(Rol::all());
     }
 
     /**
@@ -30,41 +30,18 @@ class VehiculoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //insertar en la base de datos
-        $result = Array(
-            "status"=>0
-        );
-
-        try{
-            $vehiculo = new Vehiculo();
-            $vehiculo->marca = $request->get("marca");
-            $vehiculo->modelo = $request->get("modelo");
-            $vehiculo->anio = $request->get("anio");
-            $vehiculo->placa = $request->get("placa");
-            $vehiculo->unidad_id = $request->get("unidad_id");
-            $vehiculo->usuario_id = $request->get("usuario_id");
-
-            $vehiculo->save();
-            $result["status"] = 1;
-            $result["message"] = "Vehiculo guardado correctamente";
-
-        }catch(\Exception $e){
-            $result["status"] = 0;
-            $result["message"] = $e->getMessage();
-        }
-
-        return response()->json(compact("result"));
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -75,7 +52,7 @@ class VehiculoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -86,8 +63,8 @@ class VehiculoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -98,7 +75,7 @@ class VehiculoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

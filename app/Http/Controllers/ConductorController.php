@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Conductor;
+use App\User;
 use Illuminate\Http\Request;
 
 class ConductorController extends Controller
@@ -14,7 +14,7 @@ class ConductorController extends Controller
      */
     public function index()
     {
-        return response()->json(Conductor::all());
+        return response()->json(User::where("rol_id",2)->get());
     }
 
     /**
@@ -35,7 +35,28 @@ class ConductorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //insertar en la base de datos
+        $result = Array(
+            "status"=>0
+        );
+
+        try{
+            $usuario = new User();
+            $usuario->nombre = $request->get("nombre");
+            $usuario->email = $request->get("email");
+            $usuario->rol_id = 2;
+            $usuario->password = bcrypt($request->get("password"));
+
+            $usuario->save();
+            $result["status"] = 1;
+            $result["message"] = "Conductor guardado correctamente";
+
+        }catch(\Exception $e){
+            $result["status"] = 0;
+            $result["message"] = $e->getMessage();
+        }
+
+        return response()->json(compact("result"));
     }
 
     /**

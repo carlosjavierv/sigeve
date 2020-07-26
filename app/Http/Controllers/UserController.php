@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
+        return response()->json(User::where("rol_id",3)->get());
     }
 
     /**
@@ -36,7 +36,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //insertar en la base de datos
+        $result = Array(
+            "status"=>0
+        );
+
+        try{
+            $usuario = new User();
+            $usuario->nombre = $request->get("nombre");
+            $usuario->email = $request->get("email");
+            $usuario->rol_id = 3;
+            $usuario->password = bcrypt($request->get("password"));
+
+            $usuario->save();
+            $result["status"] = 1;
+            $result["message"] = "Usuario guardado correctamente";
+
+        }catch(\Exception $e){
+            $result["status"] = 0;
+            $result["message"] = $e->getMessage();
+        }
+
+        return response()->json(compact("result"));
     }
 
     /**
@@ -103,7 +124,7 @@ class UserController extends Controller
             "idUsuario"=>$user->id,
             "token"=>$token,
             "displayName"=>$user->nombre,
-            "role"=>$user->role_id
+            "rol"=>$user->rol_id
         ];
         return response()->json($response);
     }
