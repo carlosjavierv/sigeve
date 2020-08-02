@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Conductor extends Model
+class Ubicacion extends Model
 {
-    protected $table = "usuario";
+    protected $table = 'ubicacion';
     public $timestamps = false;
 }

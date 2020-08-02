@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Unidad;
+use App\Ubicacion;
 use Illuminate\Http\Request;
 
-class UnidadController extends Controller
+class UbicacionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class UnidadController extends Controller
      */
     public function index()
     {
-        return response()->json(Unidad::all());
+        //
     }
 
     /**
@@ -41,12 +41,14 @@ class UnidadController extends Controller
         );
 
         try{
-            $unidad = new Unidad();
-            $unidad->nombre = $request->get("nombre");
+            $ubicacion = new Ubicacion();
+            $ubicacion->vehiculo_id = $request->get("vehiculo_id");
+            $ubicacion->latitud = $request->get("latitud");
+            $ubicacion->longitud = $request->get("longitud");
 
-            $unidad->save();
+            $ubicacion->save();
             $result["status"] = 1;
-            $result["message"] = "Unidad guardada correctamente";
+            $result["message"] = "Ubicació guardada correctamente";
 
         }catch(\Exception $e){
             $result["status"] = 0;
@@ -64,7 +66,7 @@ class UnidadController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Unidad::find($id));
+        return response()->json(Ubicacion::where('vehiculo_id',$id)->orderBy("id","desc")->limit(1)->get());
     }
 
     /**
@@ -87,24 +89,7 @@ class UnidadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $result = Array(
-            "status"=>0
-        );
-
-        try{
-            $unidad = Unidad::find($id);
-            $unidad->nombre = $request->get("nombre");
-
-            $unidad->save();
-            $result["status"] = 1;
-            $result["message"] = "Unidad actualizada correctamente";
-
-        }catch(\Exception $e){
-            $result["status"] = 0;
-            $result["message"] = $e->getMessage();
-        }
-
-        return response()->json(compact("result"));
+        //
     }
 
     /**
@@ -115,22 +100,6 @@ class UnidadController extends Controller
      */
     public function destroy($id)
     {
-        $result = Array(
-            "status"=>0
-        );
-
-        try{
-            $unidad = Unidad::find($id);
-
-            $unidad->delete();
-            $result["status"] = 1;
-            $result["message"] = "Unidad eliminada correctamente";
-
-        }catch(\Exception $e){
-            $result["status"] = 0;
-            $result["message"] = $e->getMessage();
-        }
-
-        return response()->json(compact("result"));
+        //
     }
 }

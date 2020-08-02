@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Conductor;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -67,7 +68,8 @@ class ConductorController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Conductor::find($id));
+
     }
 
     /**
@@ -90,7 +92,27 @@ class ConductorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //insertar en la base de datos
+        $result = Array(
+            "status"=>0
+        );
+
+        try{
+            $usuario = User::find($id);
+            $usuario->nombre = $request->get("nombre");
+            $usuario->email = $request->get("email");
+            $usuario->password = bcrypt($request->get("password"));
+
+            $usuario->save();
+            $result["status"] = 1;
+            $result["message"] = "Conductor actualizado correctamente";
+
+        }catch(\Exception $e){
+            $result["status"] = 0;
+            $result["message"] = $e->getMessage();
+        }
+
+        return response()->json(compact("result"));
     }
 
     /**
@@ -101,6 +123,22 @@ class ConductorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = Array(
+            "status"=>0
+        );
+
+        try{
+            $unidad = Conductor::find($id);
+
+            $unidad->delete();
+            $result["status"] = 1;
+            $result["message"] = "Conductor eliminado correctamente";
+
+        }catch(\Exception $e){
+            $result["status"] = 0;
+            $result["message"] = $e->getMessage();
+        }
+
+        return response()->json(compact("result"));
     }
 }

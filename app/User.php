@@ -30,4 +30,13 @@ class User extends Authenticatable
     protected $table = "usuario";
 
     public $timestamps = false;
+
+    public function unidad()
+    {
+        return $this->belongsTo('App\Unidad');
+    }
+    public function vehiculo()
+    {
+        return $this->hasMany('App\Vehiculo','usuario_id');
+    }
 }
